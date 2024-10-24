@@ -38,6 +38,7 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.18.0'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.postgresql:postgresql'
