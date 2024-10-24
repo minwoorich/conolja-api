@@ -71,14 +71,13 @@ public class JwtTokenUtil {
 
   private String generateAccessToken(String username) {
     Date date = new Date(System.currentTimeMillis() + jwtProperties.expiration().toMillis());
-    log.info("expiration date : {}", date);
     return Jwts.builder()
       .setSubject(username)
       .setIssuer(jwtProperties.issuer())
       // 만료 시간 = 현재 시각 + 유효 기간
       .setExpiration(date)
       .setIssuedAt(new Date())
-      .signWith(getPrivateKey(jwtProperties.secret()), SignatureAlgorithm.HS512)
+      .signWith(getPrivateKey(jwtProperties.secret()), SignatureAlgorithm.forName(jwtProperties.type()))
       .compact();
   }
 
