@@ -21,6 +21,8 @@ public enum ErrorCode {
   INVALID_USERNAME(401, "유저네임이 일치하지 않습니다."),
   DUPLICATED_ACCOUNT(401, "이미 존재하는 계정입니다."),
 
+  UNAUTHORIZED(403, "권한이 없습니다."),
+
   INTERNAL_SERVER_ERROR(500, "서버 내부 에러입니다.");
 
   private final int status;
