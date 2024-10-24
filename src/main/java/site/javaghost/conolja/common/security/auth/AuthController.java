@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import site.javaghost.conolja.common.annotation.JwtToken;
 import site.javaghost.conolja.common.response.SimpleResponse;
-import site.javaghost.conolja.common.security.jwt.JwtProperties;
 import site.javaghost.conolja.common.security.jwt.JwtTokenDto;
 import site.javaghost.conolja.common.security.jwt.JwtTokenUtil;
 import site.javaghost.conolja.common.security.jwt.LoginRequest;
@@ -29,7 +28,6 @@ import site.javaghost.conolja.domains.account.presentation.dto.AccountCreateRequ
 public class AuthController {
   private final AuthService authService;
   private final JwtTokenUtil jwtTokenUtil;
-  private final JwtProperties props;
 
   @PostMapping("/signup")
   @Operation(summary = "회원가입", description = "회원가입을 합니다.")
