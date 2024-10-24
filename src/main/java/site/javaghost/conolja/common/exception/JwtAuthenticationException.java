@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -64,8 +65,9 @@ public class JwtAuthenticationException extends AuthenticationException {
   }
 
   public static JwtAuthenticationException invalidAuthorizationHeader(String headerValue) {
+    headerValue = StringUtils.hasText(headerValue) ? headerValue : "does not exist";
     return JwtAuthenticationException.builder()
-      .message(JWT_INVALID_AUTHORIZATION_HEADER.getMessage() + "(Authorization: " + headerValue + ")")
+      .message(JWT_INVALID_AUTHORIZATION_HEADER.getMessage() + "(전달된 헤더 값 Authorization: " + headerValue + ")")
       .timestamp(LocalDateTime.now())
       .errorCode(JWT_INVALID_AUTHORIZATION_HEADER)
       .build();

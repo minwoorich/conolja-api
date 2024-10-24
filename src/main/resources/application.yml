@@ -32,7 +32,8 @@ jwt:
   header: Authorization
   prefix: Bearer
   issuer: conolja.site
-  type: HS512
+  type: JWT
+  algorithm: HS512
   refresh:
     expiration: 86400000 # 24시간
     header: Refresh
