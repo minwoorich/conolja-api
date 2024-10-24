@@ -65,7 +65,7 @@ public class JwtTokenUtil {
     Date date = new Date(System.currentTimeMillis() + jwtProperties.refresh().expiration().toMillis());
     return Jwts.builder()
       .setExpiration(date)
-      .signWith(getPrivateKey(jwtProperties.secret()), SignatureAlgorithm.HS512)
+      .signWith(getPrivateKey(jwtProperties.secret()), SignatureAlgorithm.forName(jwtProperties.algorithm()))
       .compact();
   }
 
@@ -77,7 +77,7 @@ public class JwtTokenUtil {
       // 만료 시간 = 현재 시각 + 유효 기간
       .setExpiration(date)
       .setIssuedAt(new Date())
-      .signWith(getPrivateKey(jwtProperties.secret()), SignatureAlgorithm.forName(jwtProperties.type()))
+      .signWith(getPrivateKey(jwtProperties.secret()), SignatureAlgorithm.forName(jwtProperties.algorithm()))
       .compact();
   }
 
@@ -97,7 +97,7 @@ public class JwtTokenUtil {
   private SecretKeySpec getPrivateKey(String secretKey) {
     try {
       byte[] keyBytes = Base64.getDecoder().decode(secretKey);
-      return new SecretKeySpec(keyBytes, SignatureAlgorithm.HS512.getJcaName());
+      return new SecretKeySpec(keyBytes, SignatureAlgorithm.forName(jwtProperties.algorithm()).getJcaName());
     } catch (IllegalArgumentException e) {
       throw JwtAuthenticationException.invalidSecretKey();
     }
