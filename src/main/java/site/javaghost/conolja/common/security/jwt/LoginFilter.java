@@ -6,7 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,17 +24,14 @@ import java.io.IOException;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 public class LoginFilter extends OncePerRequestFilter {
 
+  private final ObjectMapper objectMapper;
   private final AuthenticationManager authManager;
 
   private static final String LOGIN_URI = "/auth/login"; // 로그인 요청 URI
 
-
-  @Builder
-  public LoginFilter(AuthenticationManager authManager) {
-    this.authManager = authManager;
-  }
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -60,7 +57,7 @@ public class LoginFilter extends OncePerRequestFilter {
     }
   }
 
-  private HttpServletRequestWrapper wrappedRequest(HttpServletRequest request) {
+  protected HttpServletRequestWrapper wrappedRequest(HttpServletRequest request) {
     try {
       return new CustomRequestWrapper(request);
     } catch (IOException e) {
@@ -83,11 +80,9 @@ public class LoginFilter extends OncePerRequestFilter {
 
     // authenticationProvider 를 통해 검증 '된' 인증 정보 생성
     return authManager.authenticate(preAuthToken);
-
   }
 
-  private LoginRequest getLoginInfo(HttpServletRequest request) {
-    ObjectMapper objectMapper = new ObjectMapper();
+  protected LoginRequest getLoginInfo(HttpServletRequest request) {
     try {
       return objectMapper.readValue(request.getInputStream(), LoginRequest.class);
     } catch (IOException e) {

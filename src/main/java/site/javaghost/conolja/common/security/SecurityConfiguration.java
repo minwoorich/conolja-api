@@ -44,7 +44,7 @@ public class SecurityConfiguration {
         .requestMatchers("/error/**").permitAll() // 에러 페이지
         .anyRequest().authenticated()  // 나머지 경로는 인증 요구
       )
-      .addFilterBefore(loginFilter(http), UsernamePasswordAuthenticationFilter.class)
+      .addFilterBefore(loginFilter(http, objectMapper), UsernamePasswordAuthenticationFilter.class)
       .addFilterBefore(jwtValidationFilter, LoginFilter.class)
       .addFilterBefore(exceptionHandlerFilter(), JwtValidationFilter.class)
       //커스텀 에러 핸들링
@@ -59,8 +59,8 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  public LoginFilter loginFilter(HttpSecurity http) throws Exception {
-    return new LoginFilter(authenticationManager(http));
+  public LoginFilter loginFilter(HttpSecurity http, ObjectMapper objectMapper) throws Exception {
+    return new LoginFilter(objectMapper, authenticationManager(http));
   }
 
   @Bean
