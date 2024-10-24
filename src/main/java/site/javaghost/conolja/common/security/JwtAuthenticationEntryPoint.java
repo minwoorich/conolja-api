@@ -12,7 +12,6 @@ import site.javaghost.conolja.common.exception.JwtAuthenticationException;
 import site.javaghost.conolja.common.response.CustomErrorResponse;
 
 import java.io.IOException;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -27,11 +26,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     response.setContentType("application/json; charset=UTF-8");
     CustomErrorResponse errorResponse = null;
     if (e instanceof JwtAuthenticationException) {
-      errorResponse = CustomErrorResponse.withDetails(
+      errorResponse = CustomErrorResponse.withOutDetails(
         request.getRequestURI(),
         ((JwtAuthenticationException) e).getErrorCode(),
-        ((JwtAuthenticationException) e).getTimestamp(),
-        List.of(e.getMessage()));
+        ((JwtAuthenticationException) e).getTimestamp());
     }
     response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
   }

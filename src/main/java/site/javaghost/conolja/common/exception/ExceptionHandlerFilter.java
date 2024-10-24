@@ -15,7 +15,6 @@ import site.javaghost.conolja.common.response.CustomErrorResponse;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -52,7 +51,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
     response.setCharacterEncoding("UTF-8");
     response.setContentType("application/json; charset=UTF-8");
     String body = objectMapper.writeValueAsString(
-      CustomErrorResponse.withDetails(path, errorCode, LocalDateTime.now(), List.of())
+      CustomErrorResponse.withOutDetails(path, errorCode, LocalDateTime.now())
     );
     response.getWriter().write(body);
   }
